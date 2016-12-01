@@ -25,6 +25,8 @@ public class VendingMachine extends JFrame{
    
    private double subTotal, deposit;
    
+   public static double TOTAL = 0.00;
+   
    public static final double PENNY = 0.01, NICKEL = 0.05, DIME = 0.10, QUARTER = 0.25, DOLLAR = 1.00, FIVEDOLLARS = 5.00;
 
    public static final int MAX_COKE = 2, MAX_PEPSI = 2, MAX_DR_PEPPER = 3, MAX_DORITOS = 4, MAX_TWIX = 3;
@@ -189,7 +191,7 @@ public class VendingMachine extends JFrame{
 	   public void actionPerformed(ActionEvent e)
 	   {
 		   JFrame frame = new JFrame("Amount of Items");
-		   DisplayPanel panel= new DisplayPanel(items, itemCount);
+		   DisplayPanel panel= new DisplayPanel(items, itemCount, TOTAL);
 		   frame.getContentPane().add(panel);
 		   frame.pack();
 		   frame.setVisible(true);
@@ -272,6 +274,7 @@ public class VendingMachine extends JFrame{
    {
       public void actionPerformed(ActionEvent e)
       {
+    	  TOTAL=0;
          for(int i = 0; i < items.length; i++){
             if(itemCount[i] < maxCount[i]){
                itemCount[i] = maxCount[i];
@@ -307,15 +310,17 @@ public class VendingMachine extends JFrame{
                }
           }
           if (deposit == 0 && subTotal == 0){}
-          else if(subTotal <= deposit && change <= 4){
+          else if(subTotal <= deposit && change <= TOTAL){
                
                decreaseItem(str);
                s = s.format("Thank you for your purchase!\nDon't forget to collect your change\nChange: $%.2f\n\n", change);
                summary.append(s);
+               TOTAL+=subTotal;
                subTotalTextField.setText("$0.00");
                depositTextField.setText("$0.00");
                deposit = 0;
                subTotal = 0;
+               TOTAL-=change;
           }
           else if(subTotal > deposit){
                
@@ -329,6 +334,7 @@ public class VendingMachine extends JFrame{
           else{
                decreaseItem(str);
                summary.append("Thank you for your purchase\nMachine does not have enough change" + "\n\n");
+               TOTAL+=subTotal;
                subTotalTextField.setText("$0.00");
                depositTextField.setText("$0.00");
                deposit = 0;
