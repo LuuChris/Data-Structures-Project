@@ -334,7 +334,7 @@ public class VendingMachine extends JFrame{
           else{
                decreaseItem(str);
                summary.append("Thank you for your purchase\nMachine does not have enough change" + "\n\n");
-               TOTAL+=subTotal;
+               TOTAL+=deposit;
                subTotalTextField.setText("$0.00");
                depositTextField.setText("$0.00");
                deposit = 0;
