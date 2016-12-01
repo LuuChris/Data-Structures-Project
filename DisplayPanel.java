@@ -8,8 +8,10 @@ public class DisplayPanel extends JPanel{
 		String s="";
 		s= s.format("%10s  %15s    %-10s\n-------------------------------------", "Money in Machine", "Item quantity", "Item name");
 		currentItems.append(s);
-		for(int i=0; i<item.length; i++){
-			s= s.format("\n     $%-15.2f   %15d             %-10s", a, num[i], item[i]);
+		s= s.format("\n     $%-12.2f    %15d                %-10s", a, num[0], item[0]);
+		currentItems.append(s);
+		for(int i=1; i<item.length; i++){
+			s= s.format("\n     %-15s      %15d                %-10s", "", num[i], item[i]);
 			currentItems.append(s);
 		}
 		add(currentItems);
