@@ -6,29 +6,37 @@ import java.util.*;
 public class VendingMachine extends JFrame{
 
    private JPanel menuPanel, confirmPanel, cashPanel, displayPanel;
+
    private JButton cokeButton, pepsiButton, drPepperButton, doritosButton, twixButton;
+
    private JButton pennyButton, nickelButton, dimeButton, quarterButton, dollarButton, fiveDollarsButton;
-   private JButton vendButton, clearButton, restockButton;
-//    private JButton resetButton;
+
+   private JButton vendButton, clearButton, restockButton, displayItemButton;
+
    private JPanel pricePanel, priceMenuPanel, cashSummaryPanel;
+
    private JLabel priceLabel, cokeLabel, pepsiLabel, drPepperLabel, doritosLabel, twixLabel;
+
    private JLabel subTotalLabel, cashLabel, depositLabel;
    
    private JTextArea summary;
+
    private JTextField subTotalTextField, depositTextField;
-   
-   private JScrollPane scrollPane;
    
    private double subTotal, deposit;
    
    public static final double PENNY = 0.01, NICKEL = 0.05, DIME = 0.10, QUARTER = 0.25, DOLLAR = 1.00, FIVEDOLLARS = 5.00;
+
    public static final int MAX_COKE = 2, MAX_PEPSI = 2, MAX_DR_PEPPER = 3, MAX_DORITOS = 4, MAX_TWIX = 3;
    
    public static final int FRAME_WIDTH = 600, FRAME_HEIGHT = 400;
    
    private String[] items = {"Coca-Cola", "Pepsi", "Dr Pepper", "Doritos", "Twix"};
+
    private int[] itemCount = {MAX_COKE, MAX_PEPSI, MAX_DR_PEPPER, MAX_DORITOS, MAX_TWIX};
+
    private int[] maxCount = {MAX_COKE, MAX_PEPSI, MAX_DR_PEPPER, MAX_DORITOS, MAX_TWIX};
+
    private double[] price = {1.00, 1.00, 1.00, 0.50, 1.00};
    
    public VendingMachine()
@@ -59,10 +67,10 @@ public class VendingMachine extends JFrame{
       vendButton = new JButton("Vend");
       clearButton = new JButton("Clear");
       restockButton = new JButton("Restock");
-//       resetButton = new JButton("Reset");
+      displayItemButton = new JButton("Display Items");
       
       subTotalLabel = new JLabel("Total: ");
-      summary = new JTextArea(14, 35);
+      summary = new JTextArea(14, 37);
       subTotalTextField = new JTextField("$0.00", 8);
       cashLabel = new JLabel("Insert Cash");
       depositLabel = new JLabel("Amount deposited: ");
@@ -76,9 +84,6 @@ public class VendingMachine extends JFrame{
       drPepperLabel = new JLabel("$1.00");
       doritosLabel = new JLabel("$0.50");
       twixLabel = new JLabel("$1.00");
-      
-      scrollPane = new JScrollPane(summary);
-      
       
       ActionListener itemListener = new itemHandler();
       cokeButton.addActionListener(itemListener);
@@ -94,9 +99,6 @@ public class VendingMachine extends JFrame{
       quarterButton.addActionListener(cashListener);
       dollarButton.addActionListener(cashListener);
       fiveDollarsButton.addActionListener(cashListener);
-      
-//       ActionListener resetListener = new resetHandler();
-//       resetButton.addActionListener(resetListener);
 
       ActionListener clearListener = new clearHandler();
       clearButton.addActionListener(clearListener);
@@ -106,6 +108,9 @@ public class VendingMachine extends JFrame{
       
       ActionListener vendListener = new vendHandler();
       vendButton.addActionListener(vendListener);
+      
+      ActionListener displayListener = new displayHandler();
+      displayItemButton.addActionListener(displayListener);
 
       setTitle("Vending Machine");
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -149,8 +154,8 @@ public class VendingMachine extends JFrame{
       confirmPanel.setBackground(new Color(220,220,220));
       confirmPanel.add(vendButton);
       confirmPanel.add(clearButton);
-//       confirmPanel.add(resetButton);
       confirmPanel.add(restockButton);
+      confirmPanel.add(displayItemButton);
       
       cashPanel.setLayout(new GridLayout(7, 1));
       cashLabel.setFont(new Font("Helvetica",Font.PLAIN, 20));
@@ -179,6 +184,18 @@ public class VendingMachine extends JFrame{
       vendor = new VendingMachine();
    }
    
+   class displayHandler implements ActionListener
+   {
+	   public void actionPerformed(ActionEvent e)
+	   {
+		   JFrame frame = new JFrame("Amount of Items");
+		   DisplayPanel panel= new DisplayPanel(items, itemCount);
+		   frame.getContentPane().add(panel);
+		   frame.pack();
+		   frame.setVisible(true);
+		   
+	   }
+   }
    
    class itemHandler implements ActionListener
    {
@@ -234,14 +251,6 @@ public class VendingMachine extends JFrame{
       else if (name.substring(4).equals("FIVE DOLLARS")){return VendingMachine.FIVEDOLLARS;}
       else {return 0;}
    }
-   
-//    class resetHandler implements ActionListener
-//    {
-//       public void actionPerformed(ActionEvent e)
-//       {
-//       return new VendingMachine();
-//       }
-//    }
       
    class clearHandler implements ActionListener
    {
